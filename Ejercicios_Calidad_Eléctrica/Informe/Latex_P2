@@ -1,0 +1,85 @@
+\documentclass[a4paper,11pt]{article}
+
+% ==== Paquetes de estilo y tipografía ====
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{margin=2.4cm}
+\usepackage{siunitx}
+\sisetup{per-mode=symbol}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black!65!blue,
+  urlcolor=black!65!blue,
+  citecolor=black!65!blue
+}
+\usepackage{enumitem}
+\setlist[itemize]{topsep=2pt,itemsep=2pt,parsep=0pt}
+\setlist[description]{style=unboxed,leftmargin=0cm,labelsep=0.4em}
+
+% ==== Ajustes de párrafo ====
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% ==== Título (opcional) ====
+\title{\textbf{Práctica 2 — Síntesis de resultados y análisis armónico}}
+\date{01/11/2025}
+\author{José Morcillo Ibáñez, Ángel Méndez Lores y Francisco Javier de Carranza Pol}
+\begin{document}
+\maketitle
+
+\section*{Síntesis de resultados de análisis}
+
+\subsection*{2.3 — Analizar un hueco de tensión}
+\begin{description}
+  \item[\textbf{Inicio del hueco}] \quad \textbf{\(\sim\)\SI{40}{ms}}.
+  \item[\textbf{RMS mínimo}] \quad \textbf{\(\approx\)\SI{115}{V\(_\mathrm{RMS}\)}}.
+  \item[\textbf{Recuperación}] \quad vuelve al nominal hacia \textbf{\(\sim\)\SI{110}{ms}} (unos \(\sim\)\SI{10}{ms} tras finalizar el hueco).
+  \item[\textbf{¿Supera el \(-10\,\%\)?}] \quad \textbf{Sí}. Por debajo de \SI{207}{V} desde \textbf{\(\sim\)\SI{45}{ms}} hasta \textbf{\(\sim\)\SI{105}{ms}} (\(\sim\)\SI{60}{ms}).
+\end{description}
+
+\subsection*{3.4 — Comparar diferentes cargas}
+\textbf{Pregunta:} ¿Qué carga supera el límite normativo del 8\,\% de THD?\\[-2pt]
+\begin{center}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Carga} & \textbf{THD teórico (\%)} & \textbf{¿Supera 8\,\%?} \\
+\midrule
+Lineal (ideal)                & \(0.00\)   & No \\
+Distorsión moderada (3º:10\%, 5º:5\%) & \(11.18\)  & \textbf{Sí} \\
+Altamente distorsionada (3º:25\%, 5º:15\%, 7º:10\%) & \(30.82\)  & \textbf{Sí} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{-4pt}
+\textbf{Respuesta breve:} superan el 8\,\% la \textit{carga con distorsión moderada} y la \textit{altamente distorsionada}; la \textit{lineal} cumple.
+
+\subsection*{4.6 — Sistema fotovoltaico con inversores}
+\textbf{Escenario.} Señal de \(\SI{1}{s}\) a \(f_0=\SI{50}{Hz}\) (\(V_1=\SI{325}{V}\)) con armónicos característicos de inversores:
+3º (5\,\%), 5º (8\,\%), 7º (6\,\%), 11º (4\,\%) y 13º (3\,\%).\\[-4pt]
+
+\textbf{THD.} El valor resultante es \(\approx\)\textbf{\(12.25\,\%\)}, por lo que \textbf{no cumple} el criterio habitual de tensión en PCC para BT
+(\(\mathrm{THD}\le 5\,\%\) y armónico individual \(\le 3\,\%\)). Los tres armónicos más relevantes son: \textbf{5º (8\,\%)}, \textbf{7º (6\,\%)} y \textbf{3º (5\,\%)}.\\[-4pt]
+
+\textbf{Medida correctora propuesta.}
+\begin{itemize}
+  \item Trampas sintonizadas (paralelo) en 5ª y 7ª (\(\sim\)80\,\% de atenuación cada una).
+  \item Mitigación de 3ª (conexión delta/zig--zag o trampa dedicada, \(\sim\)50\,\%).
+  \item Atenuación suave de 11ª--13ª (LCL/pasivo de mayor orden, \(\sim\)25\,\%).
+\end{itemize}
+
+\textbf{Efecto esperado.} Con las atenuaciones objetivo anteriores, el THD estimado cae a \(\approx\)\textbf{\(4.93\,\%\)}, quedando \textbf{por debajo del 5\,\%}.
+
+\vspace{4pt}
+\hrule
+\vspace{2pt}
+\small
+\textit{Nota.} Los valores se expresan como porcentaje respecto al fundamental en tensión. Criterios de referencia tomados del uso habitual de límites de IEEE~519 para tensión en baja tensión: THD\(\le 5\,\%\) y armónico individual\(\le 3\,\%\) en el PCC.
+
+\end{document}
