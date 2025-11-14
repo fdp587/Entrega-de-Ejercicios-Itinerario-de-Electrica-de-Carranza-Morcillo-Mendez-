@@ -1,0 +1,499 @@
+\documentclass[11pt,a4paper]{article}
+
+% ====== Paquetes ======
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{siunitx}
+\sisetup{per-mode=symbol,detect-all}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!60!black}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{float}
+% ====== Estilo de secciones ======
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.6em}{}
+
+% ====== Caja tipo “Problema” (solo para enunciado) ======
+\newtcolorbox{problema}[2][]{%
+  enhanced,
+  breakable,
+  colback=blue!3,
+  colframe=blue!65!black,
+  coltitle=white,
+  fonttitle=\bfseries,
+  title={#2},
+  attach boxed title to top left={xshift=0.5mm,yshift*=-2mm},
+  boxed title style={colback=blue!70!black,boxrule=0pt,arc=2pt},
+  sharp corners,
+  boxsep=1.2mm,
+  left=2mm,right=2mm,top=2mm,bottom=2mm,
+  #1
+}
+
+% ====== Datos del informe ======
+\title{\textbf{Informe de Ejercicios — Circuitos de Primer y Segundo Orden}}
+\author{Grupo 6: Ángel Mendez Lores, Francisco Javier de Carranza Pol y José Morcillo Ibáñez}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Problemas Teóricos}
+
+% ==== PROBLEMA 1 ====
+\begin{problema}{Problema 1}
+Considere un circuito RL con \(R=\SI{150}{\ohm}\) y \(L=\SI{75}{\milli\henry}\).
+En \(t=0\), se conecta una fuente de tensión continua de \(\SI{24}{\volt}\) al circuito.
+
+\begin{enumerate}[label=\alph*)]
+  \item ¿Cuál es la constante de tiempo de este circuito?
+  \item Dibuje la curva de respuesta de corriente, etiquetando los puntos clave.
+  \item ¿Cuánto tiempo tarda la corriente en alcanzar el \(90\%\)?
+\end{enumerate}
+\end{problema}
+
+% ==== DESARROLLO SIN CAJA ====
+\noindent\textbf{Desarrollo apartado a):}
+La ecuación de la malla en el dominio de s quedaria:
+\[
+V(s) = R I(s) + L s I(s)
+\]
+Como queremos estudiar la respuesta de la intensidad en función de la fuente despejamos la intensidad
+\[
+I(s) = \frac{V(s)}{R + L s}
+\]
+Y si despejamos la salida partido la entrada obtenemos la función de transferencia:
+\[
+\frac{I(s)}{V(s)} = \frac{1}{R + L s}
+\]
+Dejando en forma normalizada tenemos:
+\[
+\frac{I(s)}{V(s)} = \frac{\frac{1}{R}}{\frac{L}{R}s + 1}
+\]
+En esta forma normalizada sabemos que el valor que acompaña a la s es la constante de tiempo, que corresponde al 63\% de la respuesta al escalón de entrada. Por lo tanto nuestra constante de tiempo es:
+\[
+\tau = \frac{L}{R} = \tau = \frac{75\times10^{-3}}{150} = 5\times10^{-4}\,\text{s} = 0.5\,\text{ms}
+\]
+\textbf{Desarrollo apartado b):}
+Para poder dibujar la curva de respuesta de la corriente debemos conocer la respuesta de la corriente en el dominio del tiempo. Por lo que partiendo de esta expresión que ya conocemos:
+\[
+I(s) = \frac{V(s)}{R + L s}
+\]
+Para una entrada escalón de amplitud \(V\) y dejando en forma normalizada tenemos:
+\[
+V(s) = \frac{V}{s}
+\quad \Longrightarrow \quad
+I(s) = \frac{V/R}{s \left( \frac{L}{R}s + 1 \right)}
+\]
+
+
+
+Descomponiendo en fracciones parciales:
+\[
+\frac{V/R}{s \left( \frac{L}{R}s + 1 \right)}
+= \frac{A}{s} + \frac{B}{\frac{L}{R}s + 1}=\frac{A(\frac{L}Rs+1)+Bs}{s \left( \frac{L}{R}s + 1 \right)}
+\]
+\[
+\frac{V}{R}
+=A(\frac{L}Rs+1)+B{s}\]
+
+Resolviendo para \(A\) y \(B\):
+\[A=
+\frac{V}{R} \qquad  B= -\frac{VL}{R^2}
+\]
+Sustituyendo y dejando los terminos en forma estandar para la destrasformada de Laplace tenemos:
+\[
+\frac{V/R}{s \left( \frac{L}{R}s + 1 \right)}
+= \frac{1}{s}\cdot \frac{V}{R} - \frac{\frac{V}{R}}{s + \frac{R}{L}}
+\]
+
+
+Aplicando la transformada inversa de Laplace alos dos términos que tenemos:
+\[
+i_{1}(t)
+= \frac{V}{R} 
+\]\[
+i_{2}(t)
+=- \frac{V}{R} \cdot e^{-\frac{R}{L}t}
+\]
+\[
+i(t)
+= \frac{V}{R}(1- e^{-\frac{R}{L}t})
+\]
+
+Una vez conocida la expresión de la corriente en función del tiempo, podemos esbozar la respuesta, indicando los puntos clave:
+\begin{align*}
+i(0) &= 0 \\[6pt]
+i(\infty) &= \frac{V}{R} = 0.16\,A \\[6pt]
+i(\tau) &= \frac{V}{R} \left( 1 - \frac{1}{e} \right) = 0.101\,A
+\end{align*}
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Grafica1.jpg}
+    \caption{Respuesta de la corriente del circuito.}
+    \label{fig:grafica1}
+\end{figure}
+
+\textbf{Desarrollo apartado c):}
+Para el 90\% de la respuesta:
+\[
+i(t_{90}) = 0.9\,i(\infty)
+\quad\Rightarrow\quad
+1 - e^{-t_{90}/\tau} = 0.9
+\quad\Rightarrow\quad
+t_{90} = -\tau \ln(0.1) = 1.15\,\text{ms}
+\]
+
+
+% ==== PROBLEMA 2 ====
+\begin{problema}{Problema 2}
+Considere un circuito RC en serie con \(R=\SI{680}{\ohm}\) y \(C=\SI{150}{\micro\farad}\) inicialmente cargado a \(\SI{12}{\volt}\).
+
+\begin{enumerate}[label=\alph*)]
+  \item ¿Cuál es la corriente inicial cuando el condensador se conecta a traves de la resistencia en \(t=0\)?
+  \item ¿Cuánto tiempo tardará el voltaje del condensador en caer a \(\SI{2}{\volt}\)?.
+\end{enumerate}
+\end{problema}
+
+% ==== DESARROLLO SIN CAJA ====
+\noindent\textbf{Desarrollo apartado a):}
+La ecuación de la malla en el dominio de s quedaria:
+\[
+V(s) = R I(s) + \frac{1}{Cs} I(s)+\frac{V_{0}}{s}
+\]
+Como no hay fuente externa V(s) = 0, despejando I(s) 
+\[
+I(s) = \frac{-\frac{V_{0}}{s}}{R + \frac{1}{Cs}}
+\] \qquad \[
+I(s) = \frac{-\frac{V_{0}}{R}}{s + \frac{1}{RC}}
+\] 
+Aplicando la destrasformada de Laplace:
+\[
+i(t)
+= -\frac{V_{0}}{R} \cdot e^{-\frac{t}{RC}}
+\]
+Para t=0:
+\[
+i(0)
+= -17.64mA
+\]
+\textbf{Desarrollo apartado b):}
+Como ya conocemos la funcion de la intensidad en el dominio de s sustituimos en la función del voltaje del condensador:
+\[
+V(s) = \frac{1}{Cs} \cdot \frac{-\frac{V_{0}}{R}}{s + \frac{1}{RC}} +\frac{V_{0}}{s}
+\]
+Aplicando el método de los residuos en el primer término obtenemos que:
+\[
+\frac{-\frac{V_{0}}{R}}{Cs(s + \frac{1}{RC})} = \frac{A}{Cs}+ \frac{B}{s+\frac{1}{RC}}= \frac{A(s+\frac{1}{RC})+BCs}{Cs(s + \frac{1}{RC})}
+\]
+Reescribiendo tenemos:
+\[
+{-\frac{V_{0}}{R}} = A(s+\frac{1}{RC})+BCs
+\]
+Como solución de los residuos:
+\[
+A = -V_0C \qquad B = V_0
+\]
+Sustituyendo:
+\[Vc(s) = \frac{-VoC}{Cs}+ \frac{Vo}{s+\frac{1}{RC}}+\frac{Vo}{s}
+\]
+Simplificando:
+\[Vc(s) = \frac{Vo}{s+\frac{1}{RC}}
+\]
+Aplicamos la desrasformada de Laplace:
+\[
+Vc(t)
+= V_{0} \cdot e^{-\frac{t}{RC}}
+\]
+Para Vc(t) = 2V, t=0.183s
+
+% ==== FIN DESARROLLO ====
+% ==== PROBLEMA 3 ====
+\begin{problema}{Problema 3}
+Explique por qué la tensión de un condensador y la corriente de una bobina no pueden cambiar instantáneamente. Proporcione una interpretación física para cada caso, relacionándolo con la energía almacenada.
+\end{problema}
+
+% ==== DESARROLLO SIN CAJA ====
+\noindent\textbf{Desarrollo:}
+\subsection{Comportamiento del condensador y la bobina ante cambios instantáneos}
+
+La tensión en un condensador y la corriente en una bobina no pueden variar de forma instantánea debido a la energía que ambos elementos almacenan en sus respectivos campos, eléctrico y magnético. 
+
+\subsubsection{Condensador}
+
+En un condensador, la relación entre la corriente y la tensión viene dada por:
+\[
+i_C = C \frac{dv_C}{dt}
+\]
+
+Si la tensión \(v_C\) variase instantáneamente, su derivada temporal \(\frac{dv_C}{dt}\) sería infinita, lo que implicaría una corriente \(i_C\) infinita. Sin embargo, esto no es posible en la práctica, pues ningún generador puede suministrar una corriente infinita. 
+
+Físicamente, el condensador almacena energía en su \textbf{campo eléctrico}:
+\[
+E_C = \frac{1}{2} C v_C^2
+\]
+
+Por tanto, un cambio instantáneo de tensión equivaldría a crear o destruir ese campo eléctrico en un tiempo nulo, lo que supondría una transferencia de energía infinita. 
+\subsubsection{Bobina}
+
+En una bobina, la relación entre la tensión y la corriente se expresa como:
+\[
+v_L = L \frac{di_L}{dt}
+\]
+
+Si la corriente \(i_L\) cambiara de manera instantánea, la derivada \(\frac{di_L}{dt}\) sería infinita y, en consecuencia, la tensión \(v_L\) también lo sería. Dado que una tensión infinita no es físicamente realizable, se concluye que la corriente en una bobina no puede cambiar de forma instantánea.
+
+La bobina almacena energía en su \textbf{campo magnético}:
+\[
+E_L = \frac{1}{2} L i_L^2
+\]
+
+Modificar la corriente instantáneamente implicaría establecer o eliminar ese campo magnético en un tiempo nulo. La bobina, por tanto, se opone a cambios abruptos de corriente generando una fuerza electromotriz inducida de sentido opuesto (Ley de Lenz).
+
+\newpage
+
+% ==== FIN DESARROLLO ====
+% ==== PROBLEMA DE SIMULACIÓN ====
+\begin{problema}{Problema de simulación}
+Utilice MATLAB/Simulink o Python para simular la respuesta escalón de un circuito RLC
+en serie. Grafique la tensión en el condensador y la corriente en la bobina. Parámetros:
+\(R=\SI{40}{\ohm}\), \(L=\SI{10}{\milli\henry}\), \(C=\SI{250}{\micro\farad}\), tensión de entrada = escalón de \(\SI{5}{\volt}\).
+\end{problema}
+
+% ==== DESARROLLO SIN CAJA ====
+\noindent\textbf{Desarrollo:}
+
+El Software empleado ha sido Multisim. El circuito montado es el siguiente:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{EjSimCir.PNG}
+    \caption{Circuito Simulado.}
+    \label{fig:grafica1}
+\end{figure}
+
+La respuesta de la tensión del condensador ante un escalón es la siguiente:
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{EjSimVCond.PNG}
+    \caption{Tensión del condensador.}
+    \label{fig:grafica1}
+\end{figure}
+\newpage
+De la misma manera podemos representar la corriente que circula por la bobina (que es común para todo el circuito):
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{EjSimI.PNG}
+    \caption{Corriente de la bobina.}
+    \label{fig:grafica1}
+\end{figure}
+\newpage
+% ==== FIN DESARROLLO ====
+% ==== PROBLEMA AVANZADO ====
+\begin{problema}{Problema avanzado}
+Un circuito RLC en serie tiene \( R = 1000~\Omega \), \( L = 100~\text{mH} \) y \( C = 1~\mu\text{F} \). 
+Se conecta a una fuente de tensión continua de \( 50~\text{V} \) en \( t = 0 \).
+
+\begin{enumerate}[label=\textbf{\alph*)}]
+    \item Determine si el circuito está sobreamortiguado, críticamente amortiguado o subamortiguado. 
+    Justifique su respuesta calculando \( \alpha \) y \( \omega_0 \).
+
+    \item Dibuje la forma de onda esperada para la corriente \( i(t) \), explicando las características clave 
+    de su dibujo (por ejemplo, oscilaciones, tiempo de estabilización aproximado).
+\end{enumerate}
+\end{problema}
+
+% ==== DESARROLLO SIN CAJA ====
+\noindent\textbf{Desarrollo:Apartado a}
+
+1. La ecuación en el dominio del tiempo para el circuito RLC en serie es:
+\[
+v(t) = Ri(t) + L\frac{di(t)}{dt} + \frac{1}{C} \int i(t)\,dt
+\]
+Aplicando la Transformada de Laplace (suponiendo condiciones iniciales nulas):
+\[
+V(s) = I(s)\left(R + sL + \frac{1}{sC}\right)
+\]
+
+2. Despejando la corriente en el dominio de Laplace:
+\[
+I(s) = \frac{V(s)}{R + sL + \dfrac{1}{sC}} = \frac{V(s)\,s}{L s^2 + R s + \dfrac{1}{C}}
+\]
+Si la entrada es un escalón de amplitud \(V\), entonces:
+\[
+V(s) = \frac{V}{s}
+\]
+y, por tanto:
+\[
+I(s) = \frac{V}{L s^2 + R s + \dfrac{1}{C}}
+\]
+
+3. Reescribiendo la ecuación en forma normalizada de una función de transferencia de segundo orden:
+\[
+\frac{I(s)}{V(s)} = \frac{\dfrac{V}{L}}{s^2 + \dfrac{R}{L}s + \dfrac{1}{LC}} =
+\frac{k\,\omega_0^2}{s^2 + 2\zeta\omega_0 s + \omega_0^2}
+\]
+donde:
+\[
+\omega_0 = \frac{1}{\sqrt{LC}}, \qquad 2\zeta\omega_0 = \frac{R}{L}, \qquad k = \frac{V}{L\omega_0^2}
+\]
+
+4. Sustituyendo los valores numéricos:
+\[
+R = 1000~\Omega, \quad L = 100~\text{mH} = 0.1~\text{H}, \quad C = 1~\mu\text{F} = 1\times10^{-6}~\text{F}
+\]
+\[
+\omega_0 = \frac{1}{\sqrt{(0.1)(1\times10^{-6})}} = 3162.3~\text{rad/s}
+\]
+\[
+\zeta = \frac{R}{2L\omega_0} = \frac{1000}{2(0.1)(3162.3)} = 1.58
+\]
+\[
+k = \frac{1}{L\omega_0^2} = \frac{1}{0.1(3162.3)^2} = 1.0\times10^{-6}
+\]
+
+Por tanto, la función de transferencia entre la tensión de entrada y la corriente es:
+\[
+\frac{I(s)}{V(s)} = \frac{1.0\times10^{-6}\,(3162.3)^2}{s^2 + 2(1.58)(3162.3)s + (3162.3)^2}
+\]
+
+Si el escalón aplicado es de \(V = 50~\text{V}\), se tiene:
+\[
+V(s) = \frac{50}{s} \quad \Rightarrow \quad 
+I(s) = \frac{50 \times 1.0\times10^{-6}\,(3162.3)^2}{s\left(s^2 + 2(1.58)(3162.3)s + (3162.3)^2\right)}
+\]
+
+Dado que \(\zeta = 1.58 > 1\), el circuito se clasifica como \textbf{sobreamortiguado}.
+
+Para representar la corriente en función del tiempo, debemos descomponer nuestro resultado final en fracciones simples, tal y como lo hemos hecho en los ejercicios previos, comenzando por la obtención de los polos:
+
+\[
+s^{2} + \frac{R}{L} \cdot s + \frac{1}{L \cdot C} = 0
+\]
+
+Resolviendo:
+\[
+s = \frac{-\frac{R}{L} \pm \sqrt{\left( \frac{R}{L} \right)^{2} - 4 \cdot \frac{1}{L \cdot C}}}{2}
+\]
+
+\[
+s_{1} = -1127.02
+\]
+
+\[
+s_{2} = -8872.98
+\]
+
+De tal modo que la corriente en el dominio de Laplace es la siguiente:
+
+\[
+I(s) = \frac{\frac{V}{L}}{(s - s_{1}) \cdot (s - s_{2})}
+\]
+
+Si realizamos el mismo procedimiento que anteriormente, la expresión de la corriente descompuesta en fracciones simples es:
+
+\[
+I(s) = \frac{0.065}{s - 8872.98} - \frac{0.065}{s - 1127.02}
+\]
+
+
+Aplicando ahora la transformada inversa de Laplace, obtenemos la expresión de la corriente en función del tiempo:
+
+\[
+i(t) = 0.065 \cdot \left( e^{-1127.02\,t} - e^{-8872.98\,t} \right)
+\]
+
+Dado que la función de transferencia correspondiente a la corriente del circuito respecto a la tensión de entrada se trata de un sistema de segundo orden con cero de fase no mínima, deducimos que nuestra respuesta comenzará en 0, llegará a un pico de valor desconocido, y finalmente volverá a cero de manera exponencial negativa. 
+
+Nuestro objetivo es encontrar ese pico. Lo podemos calcular mediante la derivada de la función:
+
+\[
+i'(t) = 0.065 \cdot \left( 8872.98 \cdot e^{-8872.98\,t} - 1127.02 \cdot e^{-1127.02\,t} \right) = 0
+\]
+
+Resolviendo, llegamos a que:
+
+\[
+t = 2.664 \cdot 10^{-4}\, \text{s} = 0.2664\, \text{ms}
+\]
+
+Y sustituyendo en la expresión original de la corriente:
+
+\[
+i(2.664 \cdot 10^{-4}) = 0.04203\,A = 42.03\,mA
+\]
+
+Para hallar el tiempo de establecimiento, es decir, el tiempo aproximado en el que la corriente vuelve a cero, utilizamos el método del umbral absoluto (épsilon).
+
+Este método nos aproxima nuestro segundo orden a un primero, afirmando que para tiempos "grandes", la respuesta rápida es despreciable:
+
+\[
+e^{-8872.98\,t} \approx 0
+\]
+
+Por lo que:
+
+\[
+|i(t)| \approx 0.065 \cdot e^{-1127.02\,t}
+\]
+
+La fórmula a aplicar es la siguiente:
+
+\[
+t_s = \frac{1}{|s|} \cdot \ln\left( \frac{|k|}{\varepsilon} \right)
+\]
+
+
+Épsilon es un factor orientativo:
+
+\[
+\varepsilon = p \cdot i_{MAX}
+\]
+
+Donde p indica el porcentaje de error de nuestro cálculo. Nosotros tomaremos un valor de p del 1%:
+
+\[
+\varepsilon = 0.01 \cdot 0.04203 = 4.203 \cdot 10^{-4}
+\]
+
+
+Por lo que nuestro tiempo de establecimiento es:
+
+\[
+t_s = \frac{1}{1127.02} \cdot \ln\left( \frac{0.065}{4.203 \cdot 10^{-4}} \right) = 4.47 \cdot 10^{-3}\, \text{s} = 4.47\, \text{ms}
+\]
+
+Finalmente, el esbozo de la corriente en función del tiempo es:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8
+    \textwidth]{EjAv.jpg}
+    \caption{Corriente del circuito.}
+    \label{fig:grafica1}
+\end{figure}
+
+
+
+
+
+
+
+\textit{\textcolor{gray}{Todos los cálculos teóricos fueron validados en simulación.}}
+
+% ==== FIN DESARROLLO ====
+\end{document}
